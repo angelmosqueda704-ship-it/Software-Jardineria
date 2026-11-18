@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block titulo %}Cotizaciones{% endblock %}{% block cuerpo %}
+<h1>Cotizaciones</h1><p class="sub">Propuestas económicas enviadas a clientes</p>
+<div class="barra"><form method="get" class="barra" style="margin:0"><select name="estado" onchange="this.form.submit()">
+<option value="">Todos los estados</option>{% for e in ('pendiente','aprobada','rechazada') %}<option {{ 'selected' if estado==e }}>{{ e }}</option>{% endfor %}</select></form>
+{% if usuario.rol in ('gerente','admin') %}<a class="btn" style="margin-left:auto" href="{{ url_for('rutas.cotizacion_nueva') }}">+ Nueva cotización</a>{% endif %}</div>
+<div class="card" style="padding:0;overflow:auto"><table><tr><th>No.</th><th>Cliente</th><th>Fecha</th><th class="num">Monto</th><th>Estado</th><th>Revisión</th><th></th></tr>
+{% for c in cotizaciones %}<tr><td>{{ c.id_cotizacion }}</td><td>{{ c.cliente }}</td><td>{{ c.fecha_emision }}</td><td class="num">{{ c.monto_total|mxn }}</td>
+<td><span class="tag {{ c.estado }}">{{ c.estado }}</span></td><td>{{ 'Financiera' if c.requiere_revision else '—' }}</td>
+<td><a class="btn sm sec" href="{{ url_for('rutas.cotizacion_detalle', id_cot=c.id_cotizacion) }}">Ver</a></td></tr>
+{% else %}<tr><td colspan="7">Sin resultados.</td></tr>{% endfor %}</table></div>{% endblock %}

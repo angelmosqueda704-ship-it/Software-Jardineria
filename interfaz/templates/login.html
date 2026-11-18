@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block titulo %}Iniciar sesión{% endblock %}{% block cuerpo %}
+<div class="login"><div class="card"><div class="logo"><img src="/recursos/logo.svg" width="56" alt=""></div>
+<h1>Agua y Jardín</h1><p class="sub" style="text-align:center">Sistema Integral de Gestión</p>
+<form method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+<label>Correo electrónico</label><input type="email" name="correo" required autofocus placeholder="usuario@aguayjardin.example">
+<label>Contraseña</label><input type="password" name="contrasena" required>
+<p><button class="btn" style="width:100%;margin-top:16px">Entrar</button></p></form></div></div>{% endblock %}

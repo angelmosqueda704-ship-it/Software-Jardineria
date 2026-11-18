@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% block titulo %}Nueva cotización{% endblock %}{% block cuerpo %}
+<h1>Nueva cotización</h1><p class="sub">Captura las cantidades; el total y la revisión financiera se calculan solos</p>
+<div class="card"><form method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+<label>Cliente</label><select name="id_cliente" required><option value="">— Selecciona —</option>{% for c in clientes %}<option value="{{ c.id_cliente }}">{{ c.nombre }}</option>{% endfor %}</select>
+<table style="margin-top:16px"><tr><th>Servicio</th><th>Unidad</th><th class="num">Precio</th><th style="width:120px">Cantidad</th><th class="num">Subtotal</th></tr>
+{% for s in servicios %}<tr><td>{{ s.nombre }}<br><small style="color:var(--mut)">{{ s.descripcion }}</small></td><td>{{ s.unidad }}</td><td class="num">{{ s.precio_unitario|mxn }}</td>
+<td><input type="number" min="0" step="0.01" value="0" name="cant_{{ s.id_servicio }}" data-precio="{{ s.precio_unitario }}" class="cant"></td><td class="num sub">$0.00</td></tr>{% endfor %}</table>
+<div class="total">Total: <span id="total">$0.00</span></div>
+<div id="aviso" class="aviso" style="display:none">Este monto supera $50,000 MXN: la cotización pasará a revisión de Dirección Financiera.</div>
+<p><button class="btn">Guardar cotización</button> <a class="btn sec" href="{{ url_for('rutas.cotizaciones') }}">Cancelar</a></p></form></div>
+<script>
+const f=n=>'$'+n.toLocaleString('es-MX',{minimumFractionDigits:2,maximumFractionDigits:2});
+function calc(){let t=0;document.querySelectorAll('.cant').forEach(i=>{const s=(parseFloat(i.value)||0)*parseFloat(i.dataset.precio);t+=s;i.closest('tr').querySelector('.sub').textContent=f(s)});
+document.getElementById('total').textContent=f(t);document.getElementById('aviso').style.display=t>50000?'block':'none'}
+document.querySelectorAll('.cant').forEach(i=>i.addEventListener('input',calc));
+</script>{% endblock %}

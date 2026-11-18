@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block titulo %}Obras{% endblock %}{% block cuerpo %}
+<h1>Obras y proyectos</h1><p class="sub">Obras que nacen de una cotización aprobada</p>
+<div class="card" style="padding:0;overflow:auto"><table><tr><th>Obra</th><th>Cliente</th><th>Cuadrilla</th><th>Estado</th><th>Avance</th><th>Fin estimado</th></tr>
+{% for o in obras %}<tr><td>{{ o.nombre_obra }}</td><td>{{ o.cliente }}</td><td>{{ o.cuadrilla or '—' }}</td><td><span class="tag en">{{ o.estado }}</span></td>
+<td><span class="prog"><i style="width:{{ o.porcentaje_avance }}%"></i></span> {{ o.porcentaje_avance|int }} %</td><td>{{ o.fecha_fin_estimada }}</td></tr>
+{% else %}<tr><td colspan="6">Aún no hay obras.</td></tr>{% endfor %}</table></div>{% endblock %}

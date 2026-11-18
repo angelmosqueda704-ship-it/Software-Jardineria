@@ -1,0 +1,14 @@
+{% extends "base.html" %}{% block cuerpo %}
+<h1>Hola, {{ usuario.nombre.split()[0] }}</h1><p class="sub">Resumen general del sistema (datos en vivo desde PostgreSQL)</p>
+<div class="kpis">
+ <div class="kpi"><b>{{ r.clientes }}</b><span>Clientes registrados</span></div>
+ <div class="kpi"><b>{{ r.cot_pendientes }}</b><span>Cotizaciones pendientes</span></div>
+ <div class="kpi"><b>{{ r.obras_en_curso }}</b><span>Obras en curso</span></div>
+ <div class="kpi"><b>{{ r.cuadrillas_libres }}</b><span>Cuadrillas disponibles</span></div>
+ <div class="kpi"><b>{{ r.monto_aprobado|mxn }}</b><span>Monto aprobado</span></div>
+</div>
+<div class="card"><h2 style="margin-top:0;color:var(--navy)">Cotizaciones por atender</h2>
+{% if pendientes %}<table><tr><th>No.</th><th>Cliente</th><th>Fecha</th><th class="num">Monto</th><th>Revisión</th><th></th></tr>
+{% for c in pendientes %}<tr><td>{{ c.id_cotizacion }}</td><td>{{ c.cliente }}</td><td>{{ c.fecha_emision }}</td><td class="num">{{ c.monto_total|mxn }}</td>
+<td>{{ 'Dirección Financiera' if c.requiere_revision else 'No requiere' }}</td><td><a class="btn sm sec" href="{{ url_for('rutas.cotizacion_detalle', id_cot=c.id_cotizacion) }}">Ver</a></td></tr>{% endfor %}</table>
+{% else %}<p class="sub">No hay cotizaciones pendientes.</p>{% endif %}</div>{% endblock %}

@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block titulo %}{{ titulo }}{% endblock %}{% block cuerpo %}
+<h1>{{ titulo }}</h1><p class="sub">Todos los campos son obligatorios</p>
+<div class="card"><form method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+<label>Nombre o razón social</label><input name="nombre" value="{{ c.nombre }}" maxlength="120" required>
+<div class="grid2"><div><label>Tipo de cliente</label><select name="tipo_cliente">{% for t in ('particular','empresa','gobierno') %}<option {{ 'selected' if c.tipo_cliente==t }}>{{ t }}</option>{% endfor %}</select></div>
+<div><label>RFC</label><input name="rfc" value="{{ c.rfc }}" maxlength="13" required></div>
+<div><label>Teléfono (solo dígitos)</label><input name="telefono" value="{{ c.telefono }}" maxlength="15" required></div>
+<div><label>Correo</label><input type="email" name="correo" value="{{ c.correo }}" maxlength="100" required></div></div>
+<label>Dirección</label><input name="direccion" value="{{ c.direccion }}" maxlength="200" required>
+<p style="margin-top:20px"><button class="btn">Guardar</button> <a class="btn sec" href="{{ url_for('rutas.clientes') }}">Cancelar</a></p></form></div>{% endblock %}

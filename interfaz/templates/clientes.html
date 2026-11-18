@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block titulo %}Clientes{% endblock %}{% block cuerpo %}
+<h1>Clientes</h1><p class="sub">Alta, consulta, edición y baja de clientes</p>
+<div class="barra"><form method="get" class="barra" style="margin:0"><input name="q" value="{{ q }}" placeholder="Buscar por nombre o RFC"><button class="btn sec">Buscar</button></form>
+{% if usuario.rol in ('gerente','admin') %}<a class="btn" style="margin-left:auto" href="{{ url_for('rutas.cliente_nuevo') }}">+ Nuevo cliente</a>{% endif %}</div>
+<div class="card" style="padding:0;overflow:auto"><table><tr><th>Nombre</th><th>Tipo</th><th>RFC</th><th>Teléfono</th><th>Correo</th><th></th></tr>
+{% for c in clientes %}<tr><td>{{ c.nombre }}</td><td>{{ c.tipo_cliente }}</td><td>{{ c.rfc }}</td><td>{{ c.telefono }}</td><td>{{ c.correo }}</td>
+<td style="white-space:nowrap">{% if usuario.rol in ('gerente','admin') %}<a class="btn sm sec" href="{{ url_for('rutas.cliente_editar', id_cliente=c.id_cliente) }}">Editar</a>
+<form class="inline" method="post" action="{{ url_for('rutas.cliente_eliminar', id_cliente=c.id_cliente) }}" onsubmit="return confirm('¿Eliminar a este cliente?')"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="btn sm peligro">Eliminar</button></form>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6">Sin resultados.</td></tr>{% endfor %}</table></div>{% endblock %}
